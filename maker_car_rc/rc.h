@@ -11,11 +11,7 @@
 #define RC_RF24_BTN_LEFT 0
 #define RC_RF24_BTN_RIGHT 1
 
-#define RC_RF24_LED_R 0
-#define RC_RF24_LED_G 1
-#define RC_RF24_LED_B 2
 
-#define RC_PKT_ARM_PATTERN {0xDEAD, 0xBEEF}
 #define RC_PKT_GUIDE_PATTERN 0xABBA
 
 // The various roles supported by this sketch
@@ -28,7 +24,6 @@ typedef enum {
   E_RC_CMD_SEND_RC_DATA,
   E_RC_CMD_HEART_BEAT,
   E_RC_CMD_HANDSHAKE,
-  E_RC_CMD_ARM_VEHICLE,
   E_RC_CMD_ACK,
   E_RC_CMD_ERROR,
   E_RC_CMD_MAX
@@ -49,7 +44,6 @@ typedef struct {
   uint16_t axis_right_x;
   uint16_t axis_right_y;
   uint8_t button;
-  uint8_t led;
 } stRcPktPlayloadData_t;
 
 typedef struct {
@@ -87,7 +81,7 @@ typedef enum {
 } E_RC_CHANNEL_t;
 
 void setup_rc(role_e rcRole);
-void update_rc(uint16_t left_x, uint16_t left_y, uint16_t right_x, uint16_t right_y, uint8_t button, uint8_t led);
+void update_rc(uint16_t left_x, uint16_t left_y, uint16_t right_x, uint16_t right_y, uint8_t button);
 void send_rc(uint8_t len, uint8_t* pData);
 #ifdef RC_PKT_CRC
 bool calculateCRC(stRcPkt_t pkt);

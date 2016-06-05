@@ -13,14 +13,11 @@
 //#define VEHICLE_DIR_DELTA_DEBOUNCE 40 // green
 //#define VEHICLE_DIR_DELTA_TOLERANCE 40 // green
 
-#define printf(x, ...)
 
 #ifdef VEHICLE_BATT_VOLT_COMPENSATE
 extern stBatt batt;
 #endif
 
-// motor arm flag
-bool motorArmed = false;
 
 static we_wheel_dir wheelDir[VEHICLE_DIR_MAX][WHEEL_NUM_MAX] = {
   WHEEL_DIR_ARRAY_FORWARD,
@@ -69,34 +66,14 @@ void setup_vehicle() {
 #define Y_FORWARD(y) (y < VEHICLE_Y_MID)
 #define X_LEFT(x) (x > VEHICLE_X_MID)
 
-void vehicleArm(bool bArm) {
-  motorArmed = bArm;
-}
 
-bool vehicleCheckArmed(void) {
-  return motorArmed;
-}
 
 static void vehicleSetWheelDir(we_vehicle_dir dir, uint16_t delta_x, uint16_t delta_y) {
   int i=0;
   we_wheel_dir tempDir;
   
-  for(i=0;i<WHEEL_NUM_MAX;i++)
-  {
-    printf("++++++++++++ wheel[%d]: dir:", i);
-    switch(wheelDir[dir][i]) {
-      case WHEEL_DIR_CW:
-        printf("CW\n");
-        break;
-      case WHEEL_DIR_CCW:
-        printf("CCW\n");
-        break;
-      case WHEEL_DIR_FREEZE:
-        printf("FREEZE\n");
-        break;
-    }
     
-    tempDir = wheelDir[dir][i];
+  tempDir = wheelDir[dir][i];
     
 #ifndef VEHICLE_OCTAL_DIR_ENABLE    
     if(wheelDir[dir][i] == WHEEL_DIR_FREEZE) {
@@ -123,19 +100,6 @@ static void vehicleSetWheelDir(we_vehicle_dir dir, uint16_t delta_x, uint16_t de
       } 
     }  
     
-    printf("++++++++++++ wheel[%d]: [NEW] dir:", i);
-
-    switch(tempDir) {
-      case WHEEL_DIR_CW:
-        printf("CW\n");
-        break;
-      case WHEEL_DIR_CCW:
-        printf("CCW\n");
-        break;
-      case WHEEL_DIR_FREEZE:
-        printf("FREEZE\n");
-        break;
-    }
 #endif
 
     if(tempDir == WHEEL_DIR_CW)
@@ -146,14 +110,15 @@ static void vehicleSetWheelDir(we_vehicle_dir dir, uint16_t delta_x, uint16_t de
     {
       digitalWrite(myWallE.vehicle.wheels[i].pin_cw, WHEEL_DIR_GPIO_LEVEL_CCW);
     }
-  }
 }
  
 static uint16_t vehicleCalculatePWM(uint16_t delta_x, uint16_t delta_y)
 {
-  printf("PWM:%ul\n", delta_x);
-  if(delta_x > delta_y) return delta_x*3/2;
-  else return delta_y*3/2;
+
+  if(delta_x > delta_y) 
+    return delta_x*3/2;
+  else 
+    return delta_y*3/2;
 }
 
 static void vehicleSetWheelPWM(we_vehicle_dir dir, uint16_t delta_x, uint16_t delta_y) {
@@ -227,8 +192,8 @@ static void vehicleSetWheelPWM(we_vehicle_dir dir, uint16_t delta_x, uint16_t de
     // battery volt compensate
     if(batt.pCell[0].volt < 3700 || batt.pCell[1].volt < 3700) myWallE.vehicle.wheels[i].pwm = myWallE.vehicle.wheels[i].pwm*3/2;
 #endif
-    if(myWallE.vehicle.wheels[i].pwm >= 512) myWallE.vehicle.wheels[i].pwm = 511;
-    printf("%s: myWallE.vehicle.wheels[%d]: %d\n", __FUNCTION__, i, myWallE.vehicle.wheels[i].pwm);
+    if(myWallE.vehicle.wheels[i].pwm >= 512) 
+      myWallE.vehicle.wheels[i].pwm = 511;
     analogWrite(myWallE.vehicle.wheels[i].pin_enable, myWallE.vehicle.wheels[i].pwm);
   }
 }
@@ -241,8 +206,6 @@ bool vehicleMove(uint16_t x, uint16_t y) {
   
   boolean dir = false;
   
-  // check armed?
-  //if(!motorArmed) return;
   
   // debounce
   if(x > VEHICLE_X_MID) {
@@ -288,9 +251,7 @@ bool vehicleMove(uint16_t x, uint16_t y) {
       vehicleDir = VEHICLE_DIR_BACKWARD_RIGHT;
     }
   }
-  
-  printf("vehicleDir = %d\n", vehicleDir);
-  
+    
   vehicleSetWheelDir(vehicleDir, delta_x, delta_y);
 #if 1
   delta_x /= 4;
@@ -358,7 +319,6 @@ bool vehicleRotate(uint16_t x)
   
   if((delta_x < VEHICLE_DIR_DELTA_DEBOUNCE)) return false;
   
-  printf("[%s] delta_x'= %d\n", __FUNCTION__, delta_x);
   // PWM compensation
   delta_x = vehicleRotatePWMCompensation(delta_x);
   
@@ -382,29 +342,9 @@ void vehicleTestWheelPWM(we_wheel_num wheel, we_wheel_dir dir, uint8_t pwm) {
   }
 }
 
-void vehicleTestPrint(void)
-{
-  uint8_t i=0,j=0;
-  
-  for(i=0;i<VEHICLE_DIR_MAX;i++)
-  {
-    printf("(");
-
-    for(j=0;j<WHEEL_NUM_MAX;j++)
-    {
-      if(wheelDir[i][j] == WHEEL_DIR_FREEZE) {
-        printf("  x, ");
-        continue;
-      }
-      printf("%3s, ", wheelDir[i][j] ? "CW" : "CCW");
-    }
-    printf(")\n");
-  }
-}
 
 void vehicleTestMove(we_vehicle_dir dir, uint16_t x, uint16_t y)
 {
-  vehicleTestPrint();
   vehicleSetWheelDir(dir, x, y);
   vehicleSetWheelPWM(dir, x, y);
 }

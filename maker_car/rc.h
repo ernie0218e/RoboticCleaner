@@ -11,11 +11,8 @@
 #define RC_RF24_BTN_LEFT 0
 #define RC_RF24_BTN_RIGHT 1
 
-#define RC_RF24_LED_R 0
-#define RC_RF24_LED_G 1
-#define RC_RF24_LED_B 2
 
-#define RC_PKT_ARM_PATTERN {0xDEAD, 0xBEEF}
+//#define RC_PKT_ARM_PATTERN {0xDEAD, 0xBEEF}
 #define RC_PKT_GUIDE_PATTERN 0xABBA
 
 // The various roles supported by this sketch
@@ -28,7 +25,6 @@ typedef enum {
   E_RC_CMD_SEND_RC_DATA,
   E_RC_CMD_HEART_BEAT,
   E_RC_CMD_HANDSHAKE,
-  E_RC_CMD_ARM_VEHICLE,
   E_RC_CMD_ACK,
   E_RC_CMD_ERROR,
   E_RC_CMD_MAX
