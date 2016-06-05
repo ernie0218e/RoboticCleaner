@@ -45,7 +45,6 @@ typedef struct {
   uint16_t axis_right_x;
   uint16_t axis_right_y;
   uint8_t button;
-  uint8_t led;
 } stRcPktPlayloadData_t;
 
 typedef struct {

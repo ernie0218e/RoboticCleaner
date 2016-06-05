@@ -73,8 +73,6 @@ typedef struct {
 void setup_vehicle();
 bool vehicleMove(uint16_t x, uint16_t y);
 bool vehicleRotate(uint16_t x);
-void vehicleArm(bool bArm);
-bool vehicleCheckArmed(void);
 
 // test interface
 void vehicleTestWheelPWM(we_wheel_num wheel, we_wheel_dir dir, uint8_t pwm);

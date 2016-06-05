@@ -1,4 +1,3 @@
-
 // Left joy stick (x, y)
 #define JOY_STICK_LEFT_X_PIN A1
 #define JOY_STICK_LEFT_Y_PIN A0
@@ -9,10 +8,6 @@
 #define JOY_STICK_BUTTON_PIN_0 3 // Left js button
 #define JOY_STICK_BUTTON_PIN_1 2 // Right js button
 
-// RGB LED
-//#define JOY_STICK_LED_R
-//#define JOY_STICK_LED_G
-//#define JOY_STICK_LED_B
 
 typedef enum {
   E_JOY_STICK_CH_LEFT_X = 0,

@@ -4,7 +4,6 @@
 #ifdef VEHICLE_BATT_VOLT_COMPENSATE
 #include "battery.h"
 #endif
-//#include "printf.h"
 
 //#define VEHICLE_OCTAL_DIR_ENABLE
 
@@ -71,9 +70,9 @@ void setup_vehicle() {
 static void vehicleSetWheelDir(we_vehicle_dir dir, uint16_t delta_x, uint16_t delta_y) {
   int i=0;
   we_wheel_dir tempDir;
+  for(i = 0;i < WHEEL_NUM_MAX;i++){
   
-    
-  tempDir = wheelDir[dir][i];
+    tempDir = wheelDir[dir][i];
     
 #ifndef VEHICLE_OCTAL_DIR_ENABLE    
     if(wheelDir[dir][i] == WHEEL_DIR_FREEZE) {
@@ -110,8 +109,9 @@ static void vehicleSetWheelDir(we_vehicle_dir dir, uint16_t delta_x, uint16_t de
     {
       digitalWrite(myWallE.vehicle.wheels[i].pin_cw, WHEEL_DIR_GPIO_LEVEL_CCW);
     }
+  }
 }
- 
+
 static uint16_t vehicleCalculatePWM(uint16_t delta_x, uint16_t delta_y)
 {
 
@@ -253,15 +253,12 @@ bool vehicleMove(uint16_t x, uint16_t y) {
   }
     
   vehicleSetWheelDir(vehicleDir, delta_x, delta_y);
-#if 1
+
   delta_x /= 4;
   delta_y /= 4;
   if(delta_x >= 256) delta_x = 255;
   if(delta_y >= 256) delta_y = 255;
-#else
-  if(delta_x >= 512) delta_x = 511;
-  if(delta_y >= 512) delta_y = 511;
-#endif
+
   vehicleSetWheelPWM(vehicleDir, delta_x, delta_y);
   
   return true;

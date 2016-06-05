@@ -19,11 +19,11 @@ uint16_t read_joystick(E_JOY_STICK_CHANNEL ch)
     case E_JOY_STICK_CH_LEFT_X:
 	    return analogRead(JOY_STICK_LEFT_X_PIN);
     case E_JOY_STICK_CH_LEFT_Y:
-	    return analogRead(JOY_STICK_LEFT_Y_PIN);
+	    return 1023 - analogRead(JOY_STICK_LEFT_Y_PIN);
     case E_JOY_STICK_CH_RIGHT_X:
 	    return analogRead(JOY_STICK_RIGHT_X_PIN);
     case E_JOY_STICK_CH_RIGHT_Y:
-	    return analogRead(JOY_STICK_RIGHT_Y_PIN);
+	    return 1023 - analogRead(JOY_STICK_RIGHT_Y_PIN);
     default:
 	    break;
  

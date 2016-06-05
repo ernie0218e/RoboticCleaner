@@ -28,22 +28,15 @@ void loop() {
  else
    button &=  ~(1 << RC_RF24_BTN_RIGHT);
 
-#if 0
-printf("left js (x, y) = (%4d, %4d)\n",read_joystick(E_JOY_STICK_CH_LEFT_X),
-            read_joystick(E_JOY_STICK_CH_LEFT_Y) );
-printf("right js (x, y) = (%4d, %4d)\n",read_joystick(E_JOY_STICK_CH_RIGHT_X),
-            read_joystick(E_JOY_STICK_CH_RIGHT_Y) );
-printf("button: 0x%2x\n", button);
-#else
  update_rc( read_joystick(E_JOY_STICK_CH_LEFT_X),
             read_joystick(E_JOY_STICK_CH_LEFT_Y),
             read_joystick(E_JOY_STICK_CH_RIGHT_X),
             read_joystick(E_JOY_STICK_CH_RIGHT_Y),
             button
             );
-#endif
-//uint32_t time = 0x22222222;
-//send_rc(sizeof(uint32_t), (uint8_t*)&time);
+
+  Serial.println(read_joystick(E_JOY_STICK_CH_LEFT_X));
+  Serial.println(read_joystick(E_JOY_STICK_CH_LEFT_Y));
 
 delay(20);
 }

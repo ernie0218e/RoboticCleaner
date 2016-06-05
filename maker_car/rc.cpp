@@ -18,6 +18,7 @@
 #include <RF24.h>
 #include "rc.h"
 #include "vehicle.h"
+#include "utils.h"
 
 volatile int test = 11;
 
@@ -169,8 +170,9 @@ void parseRC(void* pIncomingPkt) {
       break;
     case E_RC_CMD_SEND_RC_DATA: //RC Data
       
-      if(!vehicleRotate(pPkt->payLoad.data.axis_right_x))
+      if(!vehicleRotate(pPkt->payLoad.data.axis_right_x)){
         vehicleMove(pPkt->payLoad.data.axis_left_x, pPkt->payLoad.data.axis_left_y);
+      }
       break;
     case E_RC_CMD_HEART_BEAT:
       break;
