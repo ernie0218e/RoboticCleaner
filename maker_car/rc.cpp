@@ -173,6 +173,7 @@ void parseRC(void* pIncomingPkt) {
         int x = 0, y = 0;
         //checkSpeed(pPkt->payLoad.data.axis_left_x, pPkt->payLoad.data.axis_left_y, &x, &y);
         //vehicleMove(x, y);
+        //carMove(x, y);
         carMove(pPkt->payLoad.data.axis_left_x, pPkt->payLoad.data.axis_left_y);
       }
       break;

@@ -6,10 +6,8 @@
 #define MOUSE_DATA_PIN 4
 #define MOUSE_CLK_PIN 2
 
-extern volatile char mx, my;
-
 void mouse_init();
 void mouseTimerUpdate();
-void checkMouse();
+void checkMouse(char *mx, char *my);
 
 #endif

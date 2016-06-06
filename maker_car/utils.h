@@ -1,6 +1,8 @@
 #ifndef UTILS
 #define UTILS
 #include <Wire.h>
+#include <Arduino.h>
+#include "mouse.h"
 const int SLAVE_ADDRESS = 1;
 
 extern volatile char incomingByte;

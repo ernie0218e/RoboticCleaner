@@ -33,7 +33,7 @@ void loop() {
 // Serial.println(rcPacket.payLoad.data.axis_left_y);
 // Serial.println(rcPacket.payLoad.data.axis_right_x);
 // Serial.println(rcPacket.payLoad.data.axis_right_y);
-	mouseTimerUpdate();
+	//mouseTimerUpdate();
 }
 
 

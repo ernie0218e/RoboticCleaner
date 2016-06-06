@@ -2,7 +2,6 @@
 
 PS2 mouse(MOUSE_CLK_PIN, MOUSE_DATA_PIN);
 Timer mtimer;
-volatile char mx, my;
 
 void mouse_init(){
 	mouse.write(0xff);  // reset
@@ -13,28 +12,21 @@ void mouse_init(){
 	mouse.read();  // ack
 	delayMicroseconds(100);
 
-	mtimer.every(10, checkMouse);
+	//mtimer.every(10, checkMouse);
 }
 
 void mouseTimerUpdate(){
 	mtimer.update();
 }
 
-void checkMouse(){
+void checkMouse(char *mx, char *my){
 	char mstat;
 
 	/* get a reading from the mouse */
 	mouse.write(0xeb);  // give me data!
 	mouse.read();      // ignore ack
 	mstat = mouse.read();
-	mx = mouse.read();
-	my = mouse.read();
-
-	/* send the data back up */
-	/*Serial.print(mstat, BIN);
-	Serial.print("\tX=");
-	Serial.print(mx, DEC);
-	Serial.print("\tY=");
-	Serial.print(my, DEC);
-	Serial.println();*/
+	*mx = mouse.read();
+	*my = mouse.read();
 }
+
