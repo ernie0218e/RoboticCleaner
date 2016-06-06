@@ -77,3 +77,4 @@ bool vehicleRotate(uint16_t x);
 // test interface
 void vehicleTestWheelPWM(we_wheel_num wheel, we_wheel_dir dir, uint8_t pwm);
 void vehicleTestMove(we_vehicle_dir dir, uint16_t x, uint16_t y);
+void carMove(uint16_t x, uint16_t y);

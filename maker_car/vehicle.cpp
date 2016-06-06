@@ -1,5 +1,6 @@
 #include <Arduino.h>
 #include "vehicle.h"
+#include "utils.h"
 //#define VEHICLE_BATT_VOLT_COMPENSATE
 #ifdef VEHICLE_BATT_VOLT_COMPENSATE
 #include "battery.h"
@@ -58,8 +59,8 @@ void setup_vehicle() {
 
 }
 
-#define VEHICLE_X_MID 502
-#define VEHICLE_Y_MID 508
+#define VEHICLE_X_MID 515
+#define VEHICLE_Y_MID 517
 #define VEHICLE_RC_TOLERANCE 10
 
 #define Y_FORWARD(y) (y < VEHICLE_Y_MID)
@@ -254,8 +255,8 @@ bool vehicleMove(uint16_t x, uint16_t y) {
     
   vehicleSetWheelDir(vehicleDir, delta_x, delta_y);
 
-  delta_x /= 4;
-  delta_y /= 4;
+  delta_x /= 8;
+  delta_y /= 8;
   if(delta_x >= 256) delta_x = 255;
   if(delta_y >= 256) delta_y = 255;
 
@@ -346,3 +347,54 @@ void vehicleTestMove(we_vehicle_dir dir, uint16_t x, uint16_t y)
   vehicleSetWheelPWM(dir, x, y);
 }
 
+void carMove(uint16_t x, uint16_t y){
+
+  int i;
+  int delta_x = 0, delta_y = 0;
+  int wheelOmega[WHEEL_NUM_MAX];
+  for(i = 0;i < WHEEL_NUM_MAX;i++)
+    wheelOmega[i] = 0;
+
+  delta_x = x - VEHICLE_X_MID;
+  delta_y = y - VEHICLE_Y_MID;
+  
+  if((abs(delta_x) < VEHICLE_DIR_DELTA_TOLERANCE) && (abs(delta_y) < VEHICLE_DIR_DELTA_TOLERANCE) ) {
+    for(i = 0;i < WHEEL_NUM_MAX;i++){
+      analogWrite(myWallE.vehicle.wheels[i].pin_enable, 0);
+      wheelOmega[i] = 0;
+    }
+    return;
+  }
+
+  float vehicle_y = -delta_x/8;
+  float vehicle_x = delta_y/8;
+
+  int vw1 = 0,vw2 = 0,vw3  = 0,vw4 = 0;
+  fixSpeed(vehicle_x, vehicle_y, &vw1, &vw2, &vw3, &vw4);
+  
+  wheelOmega[WHEEL_NUM_FRONT_RIGHT] = (int)(vehicle_y - vehicle_x + vw1);
+  wheelOmega[WHEEL_NUM_FRONT_LEFT]  = (int)(vehicle_y + vehicle_x + vw2);
+  wheelOmega[WHEEL_NUM_REAR_LEFT] = -(int)(vehicle_y - vehicle_x + vw3);
+  wheelOmega[WHEEL_NUM_REAR_RIGHT] = -(int)(vehicle_y + vehicle_x + vw4);
+
+  for(i = 0;i < WHEEL_NUM_MAX;i++){
+    if (wheelOmega[i] > 0){
+      if(wheelOmega[i] <= 255){
+        digitalWrite(myWallE.vehicle.wheels[i].pin_cw, WHEEL_DIR_GPIO_LEVEL_CW);
+        analogWrite(myWallE.vehicle.wheels[i].pin_enable, wheelOmega[i]);
+      }else{
+        digitalWrite(myWallE.vehicle.wheels[i].pin_cw, WHEEL_DIR_GPIO_LEVEL_CW);
+        analogWrite(myWallE.vehicle.wheels[i].pin_enable, 255);
+      }
+    }else{
+      if(wheelOmega[i] >= -255){
+        digitalWrite(myWallE.vehicle.wheels[i].pin_cw, WHEEL_DIR_GPIO_LEVEL_CCW);
+        analogWrite(myWallE.vehicle.wheels[i].pin_enable, -wheelOmega[i]);
+      }else{
+        digitalWrite(myWallE.vehicle.wheels[i].pin_cw, WHEEL_DIR_GPIO_LEVEL_CCW);
+        analogWrite(myWallE.vehicle.wheels[i].pin_enable, 255);
+      }
+    }
+  }
+
+}

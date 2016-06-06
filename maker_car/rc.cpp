@@ -20,7 +20,6 @@
 #include "vehicle.h"
 #include "utils.h"
 
-volatile int test = 11;
 
 //
 // Hardware configuration
@@ -171,7 +170,10 @@ void parseRC(void* pIncomingPkt) {
     case E_RC_CMD_SEND_RC_DATA: //RC Data
       
       if(!vehicleRotate(pPkt->payLoad.data.axis_right_x)){
-        vehicleMove(pPkt->payLoad.data.axis_left_x, pPkt->payLoad.data.axis_left_y);
+        int x = 0, y = 0;
+        //checkSpeed(pPkt->payLoad.data.axis_left_x, pPkt->payLoad.data.axis_left_y, &x, &y);
+        //vehicleMove(x, y);
+        carMove(pPkt->payLoad.data.axis_left_x, pPkt->payLoad.data.axis_left_y);
       }
       break;
     case E_RC_CMD_HEART_BEAT:
