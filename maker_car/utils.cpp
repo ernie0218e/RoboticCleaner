@@ -4,6 +4,7 @@
 #define JOY_MID_Y 517
 
 volatile char incomingByte;
+volatile int actual_x, actual_y;
 
 void iic_init(){
   Wire.begin(SLAVE_ADDRESS);
@@ -54,6 +55,8 @@ void fixSpeed(int vx, int vy, int* vw1, int* vw2, int* vw3, int* vw4){
 		*vw2 = dy + dx;
 		*vw3 = dy - dx;
 		*vw4 = dy + dx;
+   actual_x += mx;
+   actual_y += my;
 	}else{
 		*vw1 = 0;
 		*vw2 = 0;
