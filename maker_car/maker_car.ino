@@ -90,8 +90,8 @@ void loop() {
 
 void check(){
   carMove(pts[index].x, pts[index].y);
-  Serial.println(actual_x);
-  Serial.println(actual_y);
+//  Serial.println(actual_x);
+//  Serial.println(actual_y);
 }
 
 void change(){
