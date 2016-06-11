@@ -6,9 +6,14 @@
 volatile char incomingByte;
 volatile int actual_x, actual_y;
 
+//Button info
+volatile bool lButton;
+volatile bool rButton;
+
 void iic_init(){
   Wire.begin(SLAVE_ADDRESS);
   Wire.onReceive(receiveEvent);
+  Wire.onRequest(requestEvent);
   incomingByte = 0;
 }
 
@@ -17,6 +22,11 @@ void receiveEvent(int howMany)
   while(Wire.available()){
     incomingByte = Wire.read();
   }
+}
+
+void requestEvent()
+{
+	Wire.write(lButton);
 }
 
 

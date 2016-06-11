@@ -110,6 +110,9 @@ void setup_rc(role_e rcRole)
   // on BOTH the sender and receiver
   //
 
+  rButton = false;
+  lButton = false;
+
   attachInterrupt(digitalPinToInterrupt(RC_RF24_INT_NUM), check_radio, FALLING);
 }
 
@@ -169,6 +172,14 @@ void parseRC(void* pIncomingPkt) {
       break;
     case E_RC_CMD_SEND_RC_DATA: //RC Data
       
+      if(pPkt->payLoad.data.button & (1 << RC_RF24_BTN_LEFT)){
+        lButton = lButton ^ true;
+      }
+
+      if(pPkt->payLoad.data.button & (1 << RC_RF24_BTN_RIGHT)){
+        rButton = rButton ^ true;
+      }
+
       if(!vehicleRotate(pPkt->payLoad.data.axis_right_x)){
         //int x = 0, y = 0;
         //checkSpeed(pPkt->payLoad.data.axis_left_x, pPkt->payLoad.data.axis_left_y, &x, &y);

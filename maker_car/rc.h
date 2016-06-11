@@ -15,6 +15,11 @@
 //#define RC_PKT_ARM_PATTERN {0xDEAD, 0xBEEF}
 #define RC_PKT_GUIDE_PATTERN 0xABBA
 
+
+//Button info
+extern volatile bool lButton;
+extern volatile bool rButton;
+
 // The various roles supported by this sketch
 typedef enum { role_sender = 1, role_receiver } role_e;
 
