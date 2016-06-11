@@ -1,7 +1,6 @@
 #include "mouse.h"
 
 PS2 mouse(MOUSE_CLK_PIN, MOUSE_DATA_PIN);
-Timer mtimer;
 
 void mouse_init(){
 	mouse.write(0xff);  // reset
@@ -11,15 +10,11 @@ void mouse_init(){
 	mouse.write(0xf0);  // remote mode
 	mouse.read();  // ack
 	delayMicroseconds(100);
-
-	//mtimer.every(10, checkMouse);
 }
 
-void mouseTimerUpdate(){
-	mtimer.update();
-}
 
 void checkMouse(char *mx, char *my){
+
 	char mstat;
 
 	/* get a reading from the mouse */

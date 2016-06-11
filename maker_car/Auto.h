@@ -6,10 +6,8 @@
 #include "utils.h"
 
 extern volatile char incomingByte;
-extern volatile bool lButton;
-extern volatile bool rButton;
 
 void auto_init();
-void test();
+void automove();
 
 #endif

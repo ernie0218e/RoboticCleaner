@@ -7,7 +7,6 @@
 #define MOUSE_CLK_PIN 2
 
 void mouse_init();
-void mouseTimerUpdate();
 void checkMouse(char *mx, char *my);
 
 #endif

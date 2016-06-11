@@ -8,7 +8,7 @@
 #define VEHICLE_X_MID 515
 #define VEHICLE_Y_MID 517
 
-int currentDir;
+uint8_t currentDir;
 
 struct Command{
   int x;
@@ -40,9 +40,34 @@ void auto_init(){
 
 }
 
-void test(){
-	if(rButton)
-		carMove(cmd[currentDir].x, cmd[currentDir].y);
-	else
-		carMove(VEHICLE_X_MID, VEHICLE_Y_MID);
+boolean checkDirection(uint8_t dir){
+  if(incomingByte & (1 << dir))
+    return true;
+  return false;
 }
+
+void automove(){
+  static int times = 0;
+  boolean flag = false;
+  
+  if(checkDirection(currentDir) && (times == 0)){
+    uint8_t dir = (currentDir + 1) % 4;  
+    while(checkDirection(dir)){
+      dir = (dir + 1) % 4;
+      if(dir == currentDir){
+        carMove(VEHICLE_X_MID, VEHICLE_Y_MID);
+        flag = true;
+        break;
+      }
+    }
+    currentDir = dir;
+    times = 25;
+  }
+  
+  if(times > 0)
+    times--;  
+  if(!flag)
+    carMove(cmd[currentDir].x, cmd[currentDir].y);
+  Serial.println(currentDir);
+}
+

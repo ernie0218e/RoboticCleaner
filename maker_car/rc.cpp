@@ -12,14 +12,8 @@
  * This is an example of how to user interrupts to interact with the radio.
  * It builds on the pingpair_pl example, and uses ack payloads.
  */
-#include <Arduino.h>
-#include <SPI.h>
-#include <nRF24L01.h>
-#include <RF24.h>
-#include "rc.h"
-#include "vehicle.h"
-#include "utils.h"
 
+#include "rc.h"
 
 //
 // Hardware configuration
@@ -191,14 +185,15 @@ void parseRC(void* pIncomingPkt) {
         }
       }
       rLastButtonState = (pPkt->payLoad.data.button & (1 << RC_RF24_BTN_RIGHT));
-
-      if(!vehicleRotate(pPkt->payLoad.data.axis_right_x)){
-        //int x = 0, y = 0;
-        //checkSpeed(pPkt->payLoad.data.axis_left_x, pPkt->payLoad.data.axis_left_y, &x, &y);
-        //vehicleMove(x, y);
-        //carMove(x, y);
-        carMove(pPkt->payLoad.data.axis_left_x, pPkt->payLoad.data.axis_left_y);
+      
+      if(!rButton){
+        if(!vehicleRotate(pPkt->payLoad.data.axis_right_x)){
+          carMove(pPkt->payLoad.data.axis_left_x, pPkt->payLoad.data.axis_left_y);
+        }
+      }else{
+        automove();
       }
+      
       break;
     case E_RC_CMD_HEART_BEAT:
       break;

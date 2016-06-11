@@ -11,12 +11,15 @@
 #include "Auto.h"
 
 extern stRcPkt_t rcPacket;
-extern volatile int actual_x, actual_y;
 
+//#define SQUARETEST
+#ifdef SQUARETEST
+extern volatile int actual_x, actual_y;
 Timer t, t2;
 
 void check();
 void change();
+
 
 struct Pts{
   int x;
@@ -25,17 +28,20 @@ struct Pts{
 };
 struct Pts pts[8];
 int index, event;
+#endif
 
 void setup() {
   Serial.begin(115200);      // open the serial port at 115200 bps:
   
-  actual_x = 0;
-  actual_y = 0;
   setup_rc(role_receiver);
   setup_vehicle();
   mouse_init();
   iic_init();
+  auto_init();
   
+#ifdef SQUARETEST
+  actual_x = 0;
+  actual_y = 0;
   index = 0;
 
   pts[0].x = 0;
@@ -70,36 +76,32 @@ void setup() {
   pts[7].y = 517;
   pts[7].time = 1000;
   
-  //t.every(20, check);
-  //event = t2.after(pts[index].time, change);
-  auto_init();
+  t.every(20, check);
+  event = t2.after(pts[index].time, change);
+#endif
+
 }
 
 void loop() {
 
-//  vehicleTestWheelPWM(WHEEL_NUM_REAR_LEFT, WHEEL_DIR_CW, 128);
-//  vehicleTestWheelPWM(WHEEL_NUM_FRONT_LEFT, WHEEL_DIR_CCW, 128);
-//  vehicleTestWheelPWM(WHEEL_NUM_FRONT_RIGHT, WHEEL_DIR_CCW, 128);
-//  vehicleTestWheelPWM(WHEEL_NUM_REAR_RIGHT, WHEEL_DIR_CW, 128);
-//    vehicleTestWheelPWM(WHEEL_NUM_REAR_LEFT, WHEEL_DIR_CW, 128);
-//  vehicleTestWheelPWM(WHEEL_NUM_FRONT_LEFT, WHEEL_DIR_CW, 128);
-//  vehicleTestWheelPWM(WHEEL_NUM_FRONT_RIGHT, WHEEL_DIR_CW, 128);
-//  vehicleTestWheelPWM(WHEEL_NUM_REAR_RIGHT, WHEEL_DIR_CW, 128);
-  //vehicleTestMove(VEHICLE_DIR_FORWARD_LEFT, 80, 80);
-  //t.update();
-  //t2.update();
-  test();
-  delay(50);
+#ifdef SQUARETEST
+  t.update();
+  t2.update();
+#else
+  delay(10);
+#endif
+
 }
 
+#ifdef SQUARETEST
 void check(){
   carMove(pts[index].x, pts[index].y);
-//  Serial.println(actual_x);
-//  Serial.println(actual_y);
+  Serial.println(actual_x);
+  Serial.println(actual_y);
 }
 
 void change(){
   index = (index + 1) % 8;
   t2.after(pts[index].time, change);
 }
-
+#endif
