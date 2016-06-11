@@ -7,8 +7,8 @@ volatile char incomingByte;
 volatile int actual_x, actual_y;
 
 //Button info
-volatile bool lButton;
-volatile bool rButton;
+volatile boolean lButton;
+volatile boolean rButton;
 
 void iic_init(){
   Wire.begin(SLAVE_ADDRESS);

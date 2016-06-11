@@ -1,3 +1,11 @@
+#ifndef RC_H
+#define RC_H
+#include <Arduino.h>
+#include <SPI.h>
+#include <nRF24L01.h>
+#include <RF24.h>
+
+
 #define RC_RF24_CE_PIN 7
 #define RC_RF24_CSN_PIN 8
 #define RC_RF24_ROLL_PIN 3
@@ -72,18 +80,12 @@ typedef struct {
 #endif
 } stRcPkt_t;
 
-typedef enum {
-  E_RC_CH_X,
-  E_RC_CH_Y,
-//  E_RC_BTN,
-//  E_RC_LED,
-  E_RC_CHANS
-} E_RC_CHANNEL_t;
-
 void setup_rc(role_e rcRole);
 void update_rc(uint16_t left_x, uint16_t left_y, uint16_t right_x, uint16_t right_y, uint8_t button);
 void send_rc(uint8_t len, uint8_t* pData);
 #ifdef RC_PKT_CRC
 bool calculateCRC(stRcPkt_t pkt);
+#endif
+
 #endif
 

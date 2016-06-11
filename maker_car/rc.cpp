@@ -49,6 +49,9 @@ role_e role;
 // Packet
 stRcPkt_t rcPacket;
 
+//button state buffer
+boolean rLastButtonState, lLastButtonState;
+
 // Interrupt handler, check the radio because we got an IRQ
 void check_radio(void);
 
@@ -113,6 +116,9 @@ void setup_rc(role_e rcRole)
   rButton = false;
   lButton = false;
 
+  rLastButtonState = false;
+  lLastButtonState = false;
+
   attachInterrupt(digitalPinToInterrupt(RC_RF24_INT_NUM), check_radio, FALLING);
 }
 
@@ -171,14 +177,20 @@ void parseRC(void* pIncomingPkt) {
       //printf("batteryLevel: %d", pPkt->payLoad.targetStatus.batteryLevel);
       break;
     case E_RC_CMD_SEND_RC_DATA: //RC Data
-      
-      if(pPkt->payLoad.data.button & (1 << RC_RF24_BTN_LEFT)){
-        lButton = lButton ^ true;
-      }
 
-      if(pPkt->payLoad.data.button & (1 << RC_RF24_BTN_RIGHT)){
-        rButton = rButton ^ true;
+      if((pPkt->payLoad.data.button & (1 << RC_RF24_BTN_LEFT)) != lLastButtonState){
+        if(pPkt->payLoad.data.button & (1 << RC_RF24_BTN_LEFT)){
+         lButton = lButton ^ true;
+        }
       }
+      lLastButtonState = (pPkt->payLoad.data.button & (1 << RC_RF24_BTN_LEFT));
+
+      if((pPkt->payLoad.data.button & (1 << RC_RF24_BTN_RIGHT)) != rLastButtonState){
+        if(pPkt->payLoad.data.button & (1 << RC_RF24_BTN_RIGHT)){
+          rButton = rButton ^ true;
+        }
+      }
+      rLastButtonState = (pPkt->payLoad.data.button & (1 << RC_RF24_BTN_RIGHT));
 
       if(!vehicleRotate(pPkt->payLoad.data.axis_right_x)){
         //int x = 0, y = 0;

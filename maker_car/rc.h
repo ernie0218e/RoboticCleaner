@@ -17,8 +17,8 @@
 
 
 //Button info
-extern volatile bool lButton;
-extern volatile bool rButton;
+extern volatile boolean lButton;
+extern volatile boolean rButton;
 
 // The various roles supported by this sketch
 typedef enum { role_sender = 1, role_receiver } role_e;
@@ -77,14 +77,6 @@ typedef struct {
   stRcPktCRC_t crc;
 #endif
 } stRcPkt_t;
-
-typedef enum {
-  E_RC_CH_X,
-  E_RC_CH_Y,
-//  E_RC_BTN,
-//  E_RC_LED,
-  E_RC_CHANS
-} E_RC_CHANNEL_t;
 
 void setup_rc(role_e rcRole);
 void update_rc(uint16_t left_x, uint16_t left_y, uint16_t right_x, uint16_t right_y, uint8_t button, uint8_t led);

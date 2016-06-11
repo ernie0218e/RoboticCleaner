@@ -1,6 +1,5 @@
-#include <Arduino.h>
 #include "vehicle.h"
-#include "utils.h"
+
 //#define VEHICLE_BATT_VOLT_COMPENSATE
 #ifdef VEHICLE_BATT_VOLT_COMPENSATE
 #include "battery.h"

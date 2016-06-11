@@ -1,4 +1,3 @@
-#include <Arduino.h>
 #include "joystick.h"
 
 #define JS_DEBUG(x,...)

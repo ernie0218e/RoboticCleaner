@@ -8,6 +8,7 @@
 #include "vehicle.h"
 #include "mouse.h"
 #include "utils.h"
+#include "Auto.h"
 
 extern stRcPkt_t rcPacket;
 extern volatile int actual_x, actual_y;
@@ -22,7 +23,7 @@ struct Pts{
   int y;
   int time;
 };
-struct Pts pts[4];
+struct Pts pts[8];
 int index, event;
 
 void setup() {
@@ -69,8 +70,9 @@ void setup() {
   pts[7].y = 517;
   pts[7].time = 1000;
   
-  t.every(20, check);
-  event = t2.after(pts[index].time, change);
+  //t.every(20, check);
+  //event = t2.after(pts[index].time, change);
+  auto_init();
 }
 
 void loop() {
@@ -84,8 +86,10 @@ void loop() {
 //  vehicleTestWheelPWM(WHEEL_NUM_FRONT_RIGHT, WHEEL_DIR_CW, 128);
 //  vehicleTestWheelPWM(WHEEL_NUM_REAR_RIGHT, WHEEL_DIR_CW, 128);
   //vehicleTestMove(VEHICLE_DIR_FORWARD_LEFT, 80, 80);
-  t.update();
-  t2.update();
+  //t.update();
+  //t2.update();
+  test();
+  delay(50);
 }
 
 void check(){

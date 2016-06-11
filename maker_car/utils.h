@@ -11,8 +11,8 @@ const int SLAVE_ADDRESS = 1;
 extern volatile char incomingByte;
 
 //Button info
-extern volatile bool lButton;
-extern volatile bool rButton;
+extern volatile boolean lButton;
+extern volatile boolean rButton;
 
 void receiveEvent(int howMany);
 void requestEvent();

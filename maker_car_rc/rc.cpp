@@ -12,10 +12,6 @@
  * This is an example of how to user interrupts to interact with the radio.
  * It builds on the pingpair_pl example, and uses ack payloads.
  */
-#include <Arduino.h>
-#include <SPI.h>
-#include <nRF24L01.h>
-#include <RF24.h>
 #include "rc.h"
 
 
