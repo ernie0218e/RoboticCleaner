@@ -7,6 +7,7 @@
 #include "battery.h"
 #include "vehicle.h"
 #include "mouse.h"
+#include "utils.h"
 
 extern stRcPkt_t rcPacket;
 extern volatile int actual_x, actual_y;
@@ -32,8 +33,10 @@ void setup() {
   setup_rc(role_receiver);
   setup_vehicle();
   mouse_init();
+  iic_init();
   
   index = 0;
+
   pts[0].x = 0;
   pts[0].y = 517;
   pts[0].time = 3000;
@@ -83,12 +86,12 @@ void loop() {
   //vehicleTestMove(VEHICLE_DIR_FORWARD_LEFT, 80, 80);
   t.update();
   t2.update();
-  Serial.println(actual_x);
-  Serial.println(actual_y);
 }
 
 void check(){
   carMove(pts[index].x, pts[index].y);
+//  Serial.println(actual_x);
+//  Serial.println(actual_y);
 }
 
 void change(){

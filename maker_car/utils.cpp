@@ -21,6 +21,7 @@ void receiveEvent(int howMany)
 {
   while(Wire.available()){
     incomingByte = Wire.read();
+    //Serial.println(incomingByte, DEC);
   }
 }
 
