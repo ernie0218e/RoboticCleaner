@@ -172,6 +172,7 @@ void parseRC(void* pIncomingPkt) {
       break;
     case E_RC_CMD_SEND_RC_DATA: //RC Data
 
+      //switch the mode if the button has been pressed
       if((pPkt->payLoad.data.button & (1 << RC_RF24_BTN_LEFT)) != lLastButtonState){
         if(pPkt->payLoad.data.button & (1 << RC_RF24_BTN_LEFT)){
          lButton = lButton ^ true;
@@ -186,6 +187,7 @@ void parseRC(void* pIncomingPkt) {
       }
       rLastButtonState = (pPkt->payLoad.data.button & (1 << RC_RF24_BTN_RIGHT));
       
+      //if the car is not in the auto mode
       if(!rButton){
         if(!vehicleRotate(pPkt->payLoad.data.axis_right_x)){
           carMove(pPkt->payLoad.data.axis_left_x, pPkt->payLoad.data.axis_left_y);

@@ -61,8 +61,11 @@ void fixSpeed(int vx, int vy, int* vw1, int* vw2, int* vw3, int* vw4){
   char mx, my;
   checkMouse(&mx, &my);
 	if(my != 0 || mx != 0){
+		//compute the error vector
 		dx = 0.2*(vx + mx);
-		dy = 0.2*(vy + my) ;
+		dy = 0.2*(vy + my);
+
+		//fix the motor speed
 		*vw1 = dy - dx;
 		*vw2 = dy + dx;
 		*vw3 = dy - dx;

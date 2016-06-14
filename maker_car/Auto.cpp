@@ -1,5 +1,6 @@
 #include "Auto.h"
 
+//the direction
 #define FRONT	3
 #define	BACK	2
 #define LEFT	1
@@ -41,6 +42,7 @@ void auto_init(){
 }
 
 boolean checkDirection(uint8_t dir){
+  //檢查行走方向有沒有障礙物
   if(incomingByte & (1 << dir))
     return true;
   return false;
@@ -50,11 +52,12 @@ void automove(){
   static int times = 0;
   boolean flag = false;
   
+  //如果有障礙物且已經遠離上次的障礙物
   if(checkDirection(currentDir) && (times == 0)){
-    uint8_t dir = (currentDir + 1) % 4;  
+    uint8_t dir = (currentDir + 1) % 4;  //turn 90 degrees
     while(checkDirection(dir)){
-      dir = (dir + 1) % 4;
-      if(dir == currentDir){
+      dir = (dir + 1) % 4;  //turn 90 degrees
+      if(dir == currentDir){  //if can't move
         carMove(VEHICLE_X_MID, VEHICLE_Y_MID);
         flag = true;
         break;

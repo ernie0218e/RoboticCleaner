@@ -7,6 +7,8 @@
 #define MOUSE_CLK_PIN 2
 
 void mouse_init();
+
+//get the data of the movement from the mouse
 void checkMouse(char *mx, char *my);
 
 #endif

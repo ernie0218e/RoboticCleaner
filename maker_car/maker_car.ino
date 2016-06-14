@@ -10,8 +10,11 @@
 #include "utils.h"
 #include "Auto.h"
 
+
+//recieve packet
 extern stRcPkt_t rcPacket;
 
+//uncomment to run square test
 //#define SQUARETEST
 #ifdef SQUARETEST
 extern volatile int actual_x, actual_y;

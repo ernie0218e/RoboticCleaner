@@ -15,6 +15,7 @@ void button_init(){
   button = 0;
 }
 
+//check the button
 void checkButton(){
 
 	lreading = read_button(E_JOY_STICK_BTN_1);

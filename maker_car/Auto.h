@@ -7,7 +7,10 @@
 
 extern volatile char incomingByte;
 
+//initialize the auto mode
 void auto_init();
+
+//call repeatedly
 void automove();
 
 #endif
